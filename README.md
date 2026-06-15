@@ -10,13 +10,9 @@ GST & Tax Compliance Helper Chatbot — Academic Social Impact Project (June 202
 1. Unzip `gst-sahayak-complete-codebase.zip`
 2. `cd gst-sahayak`
 3. `pip install -r requirements.txt`
-4. Copy `.env.example` → `.env` and add **at least one** LLM API key:
-   - Grok → [x.ai](https://x.ai)
-   - OpenAI → [platform.openai.com](https://platform.openai.com)
-   - Gemini → [aistudio.google.com](https://aistudio.google.com)
-   - Claude → [console.anthropic.com](https://console.anthropic.com)
-   - Hugging Face → [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
-5. Set `LLM_PROVIDER=auto` (default) or pick a specific provider
+4. Copy `.env.example` → `.env` and add **any** LLM API key(s) — use 1, 2, or all:
+   OpenRouter, OpenAI, Gemini, Groq, DeepSeek, Claude, Grok, Mistral, Together, Hugging Face, Perplexity, Fireworks, Cohere, Moonshot, Zhipu, SiliconFlow, AI21, Azure OpenAI, or Ollama (local)
+5. `LLM_PROVIDER=auto` (default) tries every configured key until one works
 6. `streamlit run main.py`
 
 App opens at http://localhost:8501

@@ -14,9 +14,9 @@ from utils.disclaimers import get_disclaimer, get_legal_notice
 from utils.llm_providers import (
     llm_fallback,
     get_available_providers,
+    get_provider_status,
     resolve_provider,
     provider_label,
-    PROVIDER_CONFIG,
     PROVIDER_PRIORITY,
 )
 
@@ -135,28 +135,34 @@ with st.sidebar:
     st.divider()
     st.markdown("**AI Provider**")
     available = get_available_providers()
-    provider_options = ["auto"] + [p for p in PROVIDER_PRIORITY if p in available]
-    if not available:
-        st.caption("No API key found. Add one in `.env` (see `.env.example`).")
-        provider_options = ["auto"] + PROVIDER_PRIORITY
+    provider_options = ["auto"] + PROVIDER_PRIORITY
 
     current = st.session_state.llm_provider
     if current not in provider_options:
-        current = provider_options[0]
+        current = "auto"
 
     selected = st.selectbox(
         "LLM for complex queries",
         provider_options,
         index=provider_options.index(current),
-        format_func=lambda p: "Auto (first available key)" if p == "auto" else provider_label(p),
+        format_func=provider_label,
     )
     st.session_state.llm_provider = selected
 
-    active = resolve_provider(selected)
-    if active:
-        st.caption(f"Active: **{provider_label(active)}**")
+    if selected == "auto":
+        if available:
+            st.caption(f"**{len(available)}** key(s) configured — auto tries all until one works")
+        else:
+            st.caption("No API keys yet — add any in `.env`")
+    elif selected in available:
+        st.caption(f"Using: **{provider_label(selected)}**")
     else:
-        st.caption("Active: **Local rules only** (no API key)")
+        st.caption(f"**{provider_label(selected)}** — key not set in `.env`")
+
+    with st.expander(f"All providers ({len(available)}/{len(PROVIDER_PRIORITY)} configured)"):
+        for p in get_provider_status():
+            icon = "✅" if p["configured"] else "⬜"
+            st.markdown(f"{icon} **{p['label']}** — `{p['env_key']}`")
 
     st.divider()
     st.markdown("**Quick Tools**")
