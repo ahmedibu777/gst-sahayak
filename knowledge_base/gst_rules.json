@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2026-06-15",
+    "source_authority": "CBIC, GST Council 56th Meeting, Income Tax Act 1961",
+    "disclaimer": "Information is subject to change. Verify with official portals (gst.gov.in, ewaybillgst.gov.in)."
+  },
+  "gstr_filing": {
+    "gstr1": {
+      "description": "Statement of Outward Supplies",
+      "frequency_options": ["Monthly", "Quarterly (QRMP)"],
+      "due_dates": {
+        "monthly": "11th of next month",
+        "qrmp_iff": "13th of next month (for M1 & M2 of quarter)",
+        "qrmp_full": "13th of month following quarter-end"
+      }
+    },
+    "gstr3b": {
+      "description": "Summary Return & Tax Payment",
+      "frequency_options": ["Monthly", "Quarterly (QRMP)"],
+      "due_dates": {
+        "monthly": "20th of next month",
+        "qrmp_group_a": "22nd of month following quarter",
+        "qrmp_group_b": "24nd of month following quarter"
+      }
+    }
+  },
+  "itc_logic": {
+    "eligibility_conditions": [
+      "Possession of valid tax invoice/debit note.",
+      "Receipt of goods/services.",
+      "Supplier has filed GSTR-1/IFF and paid tax.",
+      "Recipient has filed GSTR-3B.",
+      "ITC is reflected in GSTR-2B (Mandatory since Feb 2025).",
+      "Not blocked under Section 17(5)."
+    ],
+    "blocked_credits_section_17_5": [
+      "Motor vehicles (seating capacity <= 13) unless used for further supply...",
+      "Food, beverages, outdoor catering...",
+      "Works contract services for construction of immovable property...",
+      "Goods/services for construction of immovable property on own account.",
+      "Goods lost, stolen, destroyed, written off, or disposed of by way of gift/free samples.",
+      "Tax paid under composition scheme, fraud, or willful misstatement."
+    ]
+  },
+  "calculators": {
+    "gst_late_fee": {
+      "rule": "Section 47 CGST Act",
+      "with_liability": {
+        "rate_per_day": 50,
+        "split": {"cgst": 25, "sgst": 25},
+        "max_cap": 5000
+      },
+      "nil_return": {
+        "rate_per_day": 20,
+        "split": {"cgst": 10, "sgst": 10},
+        "max_cap": 2000
+      },
+      "interest_on_tax": {
+        "rate_per_annum": 18
+      }
+    },
+    "tds_section_194j": {
+      "threshold_per_client_per_fy": 50000,
+      "rates": {
+        "professional_fees": 10,
+        "technical_services": 2,
+        "no_pan": 20
+      }
+    }
+  },
+  "eway_bill": {
+    "applicability_thresholds": {
+      "inter_state": 50000,
+      "intra_state_defaults": {
+        "Karnataka": 50000,
+        "Maharashtra": 100000,
+        "Delhi": 100000,
+        "Gujarat": 50000,
+        "Tamil_Nadu": 100000
+      }
+    },
+    "validity_rules": {
+      "normal_cargo": "1 day per 200 km",
+      "over_dimensional_cargo": "1 day per 20 km"
+    }
+  },
+  "composition_scheme": {
+    "eligibility_turnover": {
+      "goods_normal_states": 15000000,
+      "goods_special_states": 7500000,
+      "services_mixed": 5000000
+    },
+    "tax_rates": {
+      "goods": {"total": 1.0},
+      "services_mixed": {"total": 6.0}
+    }
+  },
+  "faqs": [
+    {
+      "intent": "itc_not_reflected_gstr2b",
+      "question": "My supplier's invoice is not showing in GSTR-2B. Can I claim ITC?",
+      "answer": "No. As per Rule 60 amendment (Feb 2025), GSTR-2B is the mandatory basis for ITC claims. Contact your supplier to file their GSTR-1/IFF.",
+      "action": "Contact Supplier"
+    },
+    {
+      "intent": "late_fee_calculation",
+      "question": "How much late fee for GSTR-3B 10 days late with tax liability?",
+      "answer": "For returns with tax liability, late fee is ₹50 per day. For 10 days: ₹500. Cap is ₹5,000. Plus 18% p.a. interest on unpaid tax.",
+      "action": "Calculate Exact Amount"
+    }
+  ]
+}

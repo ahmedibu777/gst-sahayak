@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GST Sahayak — AI-powered GST compliance helper for Indian small businesses. Hybrid rule engine + Grok API fallback.">
+  <meta name="github-repo" content="https://github.com/ahmedibu777/gst-sahayak">
+  <title>GST Sahayak | GST Compliance Helper</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="bg-pattern" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <a href="#" class="logo">
+      <span class="logo-flag">🇮🇳</span>
+      <span>GST Sahayak</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#setup">Setup</a>
+      <a href="https://github.com/" class="nav-cta" id="github-link" target="_blank" rel="noopener">View on GitHub</a>
+    </div>
+    <button class="nav-toggle" aria-label="Toggle menu" id="nav-toggle">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-badge">Academic Social Impact Project · June 2026</div>
+    <h1>Your AI-powered<br><em>GST compliance</em> companion</h1>
+    <p class="hero-sub">
+      Hybrid chatbot for Indian MSMEs, freelancers &amp; CA students.
+      Rule engine for accuracy. Grok AI for complex queries. Zero guesswork on due dates.
+    </p>
+    <div class="hero-actions">
+      <a href="#setup" class="btn btn-primary">Get Started</a>
+      <a href="#architecture" class="btn btn-ghost">How it works</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">8/8</span>
+        <span class="stat-label">Tests passing</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">3-layer</span>
+        <span class="stat-label">Hybrid AI</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">Disclaimer coverage</span>
+      </div>
+    </div>
+  </header>
+
+  <section id="features" class="section">
+    <h2 class="section-title">Built for real compliance needs</h2>
+    <div class="feature-grid">
+      <article class="card">
+        <div class="card-icon">📅</div>
+        <h3>Due Date Calculator</h3>
+        <p>Dynamic GSTR-1 &amp; GSTR-3B dates for Monthly and QRMP filers, state-group aware.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon">💰</div>
+        <h3>Late Fee &amp; TDS</h3>
+        <p>Section 47 late fees and Section 194J TDS — computed deterministically, no hallucinations.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon">🧾</div>
+        <h3>ITC Eligibility</h3>
+        <p>GSTR-2B checks, blocked credit rules under Section 17(5), clear eligibility verdicts.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon">🚛</div>
+        <h3>E-way &amp; Composition</h3>
+        <p>Threshold guidance for inter/intra-state movement and composition scheme eligibility.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon">✅</div>
+        <h3>Validators</h3>
+        <p>GSTIN format validation, HSN code checks — production-grade regex rules.</p>
+      </article>
+      <article class="card">
+        <div class="card-icon">💬</div>
+        <h3>Chat + Quick Replies</h3>
+        <p>Natural language chat with one-click buttons. Mobile-friendly Streamlit UI.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="architecture" class="section section-alt">
+    <h2 class="section-title">Hybrid architecture</h2>
+    <p class="section-lead">Fast local answers first. Grok API only when needed.</p>
+    <div class="arch-flow">
+      <div class="arch-step">
+        <span class="arch-num">1</span>
+        <h4>User Query</h4>
+        <p>Natural language or quick-reply button</p>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step arch-step-highlight">
+        <span class="arch-num">2</span>
+        <h4>FAISS + Rules</h4>
+        <p>High confidence → instant KB answer</p>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">
+        <span class="arch-num">3</span>
+        <h4>Grok Fallback</h4>
+        <p>Complex queries → x.ai API</p>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">
+        <span class="arch-num">4</span>
+        <h4>Disclaimer</h4>
+        <p>Every response, no exceptions</p>
+      </div>
+    </div>
+    <div class="arch-tags">
+      <span>sentence-transformers</span>
+      <span>FAISS</span>
+      <span>Streamlit</span>
+      <span>Grok API</span>
+      <span>Rule Engine</span>
+    </div>
+  </section>
+
+  <section id="setup" class="section">
+    <h2 class="section-title">Run in 5 minutes</h2>
+    <div class="setup-grid">
+      <div class="setup-steps">
+        <ol class="steps-list">
+          <li>Unzip <code>gst-sahayak-complete-codebase.zip</code></li>
+          <li><code>cd gst-sahayak</code></li>
+          <li><code>pip install -r requirements.txt</code></li>
+          <li>Copy <code>.env.example</code> → <code>.env</code>, add Grok API key from <a href="https://x.ai" target="_blank" rel="noopener">x.ai</a></li>
+          <li><code>streamlit run main.py</code></li>
+        </ol>
+        <p class="setup-note">Opens at <strong>localhost:8501</strong></p>
+      </div>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+          <span>terminal</span>
+        </div>
+        <pre><code id="setup-code">cd gst-sahayak
+pip install -r requirements.txt
+cp .env.example .env
+# Add GROK_API_KEY=sk-...
+streamlit run main.py</code></pre>
+        <button class="copy-btn" id="copy-btn" type="button">Copy commands</button>
+      </div>
+    </div>
+    <div class="deploy-cards">
+      <div class="deploy-card">
+        <h4>🐳 Docker</h4>
+        <code>docker build -t gst-sahayak . && docker run -p 8501:8501 --env-file .env gst-sahayak</code>
+      </div>
+      <div class="deploy-card">
+        <h4>☁️ Streamlit Cloud</h4>
+        <p>Push to GitHub → connect at share.streamlit.io → add <code>GROK_API_KEY</code> in Secrets.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <h2 class="section-title">Test suite</h2>
+    <div class="test-grid">
+      <div class="test-item"><span class="check">✅</span> GSTR-3B due dates (monthly)</div>
+      <div class="test-item"><span class="check">✅</span> Late fee calculation</div>
+      <div class="test-item"><span class="check">✅</span> TDS below threshold</div>
+      <div class="test-item"><span class="check">✅</span> TDS above threshold</div>
+      <div class="test-item"><span class="check">✅</span> ITC eligibility</div>
+      <div class="test-item"><span class="check">✅</span> GSTIN validator</div>
+      <div class="test-item"><span class="check">✅</span> Invalid GSTIN</div>
+      <div class="test-item"><span class="check">✅</span> HSN validator</div>
+    </div>
+    <p class="test-cmd"><code>pytest tests/ -v</code></p>
+  </section>
+
+  <footer class="footer">
+    <p><strong>GST Sahayak v1.0</strong> — Academic Social Impact Project | June 2026</p>
+    <p class="disclaimer">Educational purposes only. Verify on <a href="https://gst.gov.in" target="_blank" rel="noopener">gst.gov.in</a>. Consult a qualified Chartered Accountant.</p>
+    <p class="footer-love">Built with care for India's MSMEs and first-generation taxpayers.</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

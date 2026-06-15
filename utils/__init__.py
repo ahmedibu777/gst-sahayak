@@ -1,0 +1,1 @@
+from .disclaimers import get_disclaimer, get_legal_notice
