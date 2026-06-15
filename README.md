@@ -2,6 +2,9 @@
 
 GST & Tax Compliance Helper Chatbot — Academic Social Impact Project (June 2026)
 
+- **Repo:** https://github.com/ahmedibu777/gst-sahayak
+- **GitHub Pages:** https://ahmedibu777.github.io/gst-sahayak/
+
 ## Steps after downloading
 
 1. Unzip `gst-sahayak-complete-codebase.zip`
