@@ -1,20 +1,24 @@
 """
 GST Sahayak - Main Streamlit Application
-Hybrid Architecture: Rule Engine + Semantic Search + LLM Fallback (Grok API)
+Hybrid Architecture: Rule Engine + Semantic Search + Multi-Provider LLM Fallback
 References: All previous pipeline outputs (Qwen KB, Mistral impl, Gemini design, Nemotron research)
 """
 
 import streamlit as st
-import os
 from dotenv import load_dotenv
-import requests
-import json
-from datetime import date
 
 # Local imports
 from rule_engine import GSTDueDateCalculator, calculate_late_fee, calculate_tds_194j, itc_eligibility_checker
 from nlp.intent_classifier import IntentClassifier
 from utils.disclaimers import get_disclaimer, get_legal_notice
+from utils.llm_providers import (
+    llm_fallback,
+    get_available_providers,
+    resolve_provider,
+    provider_label,
+    PROVIDER_CONFIG,
+    PROVIDER_PRIORITY,
+)
 
 load_dotenv()
 st.set_page_config(page_title="GST Sahayak", page_icon="🇮🇳", layout="wide")
@@ -40,47 +44,15 @@ if "user_profile" not in st.session_state:
         "turnover_crore": 2.0,
         "state_group": "A"
     }
+if "llm_provider" not in st.session_state:
+    default_provider = resolve_provider() or "auto"
+    st.session_state.llm_provider = default_provider
 
 def handle_user_query(query: str):
     """Append user message, process, and store assistant response."""
     st.session_state.messages.append({"role": "user", "content": query})
     response = process_query(query)
     st.session_state.messages.append({"role": "assistant", "content": response})
-
-def llm_fallback(query: str, context: str = "") -> str:
-    """Grok API Fallback for complex/ambiguous queries"""
-    api_key = os.getenv("GROK_API_KEY")
-    if not api_key:
-        return "⚠️ Grok API key not configured. Using local knowledge only." + get_disclaimer()
-
-    system_prompt = (
-        "You are GST Sahayak, an empathetic, accurate GST compliance assistant for Indian small businesses, "
-        "freelancers and CA students. Use ONLY verified knowledge from context. "
-        "Be helpful, clear, and use simple language. Always end with the disclaimer."
-    )
-
-    payload = {
-        "model": "grok-beta",
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": f"Context: {context}\n\nUser Query: {query}\n\nUser Profile: {st.session_state.user_profile}"}
-        ],
-        "temperature": 0.3,
-        "max_tokens": 800
-    }
-
-    try:
-        response = requests.post(
-            "https://api.x.ai/v1/chat/completions",
-            json=payload,
-            headers={"Authorization": f"Bearer {api_key}"},
-            timeout=20
-        )
-        response.raise_for_status()
-        content = response.json()["choices"][0]["message"]["content"]
-        return content + get_disclaimer()
-    except Exception as e:
-        return f"Sorry, I had trouble connecting to advanced AI. Here's what I know locally: {context}" + get_disclaimer()
 
 def process_query(query: str):
     """Hybrid Routing Logic"""
@@ -135,7 +107,13 @@ def process_query(query: str):
 
     # 3. Low confidence or complex -> LLM Fallback
     context = "Use GST knowledge base for accurate answers about filing, ITC, e-way bills, late fees, TDS."
-    return llm_fallback(query, context)
+    return llm_fallback(
+        query,
+        context,
+        user_profile=st.session_state.user_profile,
+        provider=st.session_state.llm_provider,
+        disclaimer_fn=get_disclaimer,
+    )
 
 # ============ UI ============
 st.title("🇮🇳 GST Sahayak")
@@ -153,6 +131,32 @@ with st.sidebar:
     )
     st.session_state.user_profile["state_group"] = st.selectbox("State Group (for QRMP)", ["A", "B"], index=0)
     st.session_state.user_profile["turnover_crore"] = st.slider("Annual Turnover (₹ Crore)", 0.5, 10.0, 2.0, 0.5)
+
+    st.divider()
+    st.markdown("**AI Provider**")
+    available = get_available_providers()
+    provider_options = ["auto"] + [p for p in PROVIDER_PRIORITY if p in available]
+    if not available:
+        st.caption("No API key found. Add one in `.env` (see `.env.example`).")
+        provider_options = ["auto"] + PROVIDER_PRIORITY
+
+    current = st.session_state.llm_provider
+    if current not in provider_options:
+        current = provider_options[0]
+
+    selected = st.selectbox(
+        "LLM for complex queries",
+        provider_options,
+        index=provider_options.index(current),
+        format_func=lambda p: "Auto (first available key)" if p == "auto" else provider_label(p),
+    )
+    st.session_state.llm_provider = selected
+
+    active = resolve_provider(selected)
+    if active:
+        st.caption(f"Active: **{provider_label(active)}**")
+    else:
+        st.caption("Active: **Local rules only** (no API key)")
 
     st.divider()
     st.markdown("**Quick Tools**")
@@ -186,7 +190,9 @@ if prompt := st.chat_input("Ask about GST, ITC, due dates, late fees, e-way bill
 
 # Footer
 st.markdown("---")
-st.caption(get_legal_notice() + " | Hybrid AI (Local + Grok Fallback) | Mobile Friendly")
+active_llm = resolve_provider(st.session_state.llm_provider)
+llm_tag = provider_label(active_llm) if active_llm else "Local only"
+st.caption(get_legal_notice() + f" | Hybrid AI (Local + {llm_tag}) | Mobile Friendly")
 
 # Quick Reply Buttons at bottom for demo
 st.markdown("**Quick Replies:**")

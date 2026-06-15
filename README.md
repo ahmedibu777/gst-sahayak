@@ -10,8 +10,14 @@ GST & Tax Compliance Helper Chatbot — Academic Social Impact Project (June 202
 1. Unzip `gst-sahayak-complete-codebase.zip`
 2. `cd gst-sahayak`
 3. `pip install -r requirements.txt`
-4. Copy `.env.example` → `.env` and add your Grok API key (from [x.ai](https://x.ai))
-5. `streamlit run main.py`
+4. Copy `.env.example` → `.env` and add **at least one** LLM API key:
+   - Grok → [x.ai](https://x.ai)
+   - OpenAI → [platform.openai.com](https://platform.openai.com)
+   - Gemini → [aistudio.google.com](https://aistudio.google.com)
+   - Claude → [console.anthropic.com](https://console.anthropic.com)
+   - Hugging Face → [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+5. Set `LLM_PROVIDER=auto` (default) or pick a specific provider
+6. `streamlit run main.py`
 
 App opens at http://localhost:8501
 
@@ -30,7 +36,7 @@ All 8 tests pass (verified):
 **Hybrid Architecture:**
 
 - High-confidence queries → Rule Engine + FAISS semantic search (fast, zero hallucination)
-- Low-confidence / complex queries → Grok API fallback (`llm_fallback()` in `main.py`)
+- Low-confidence / complex queries → LLM fallback (Grok, OpenAI, Gemini, Claude, or Hugging Face — `utils/llm_providers.py`)
 - Every response ends with the full academic disclaimer
 
 **Features:**
@@ -49,7 +55,7 @@ All 8 tests pass (verified):
 1. Push repo to GitHub
 2. Go to [share.streamlit.io](https://share.streamlit.io) → New app
 3. Select repo, set main file to `main.py`
-4. Add `GROK_API_KEY` in Secrets
+4. Add at least one API key in Secrets (`OPENAI_API_KEY`, `GEMINI_API_KEY`, etc.) and optional `LLM_PROVIDER`
 5. Deploy
 
 ### Docker
@@ -66,7 +72,7 @@ Landing page is in `docs/` — enable Pages in repo Settings → Pages → Sourc
 ## Next Steps (Academic Submission)
 
 1. Unzip → run locally (~5 minutes)
-2. Add your Grok API key in `.env`
+2. Add your preferred LLM API key in `.env`
 3. Take screenshots of the chat for your report
 
 ## Disclaimer
